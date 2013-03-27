@@ -1,5 +1,7 @@
-%h3 User
+%h3=t('user.show.header', user_name: @user.name)
 %p
-  User: #{@user.name}
+  =tp('email') 
+  #{@user.email if @user.email}
 %p
-  Email: #{@user.email if @user.email}
+  =tp('user.show.memes_count')
+  #{@user.memes_count}

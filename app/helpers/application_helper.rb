@@ -12,4 +12,8 @@ module ApplicationHelper
     html.html_safe
   end
 
+  def tp(value)
+    "#{t(value)}: "
+  end
+
 end

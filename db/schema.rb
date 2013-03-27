@@ -11,7 +11,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130327163129) do
+ActiveRecord::Schema.define(:version => 20130327165456) do
+
+  create_table "memes", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "uid"
+    t.binary   "picture",    :limit => 16777215
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+  end
+
+  add_index "memes", ["uid"], :name => "index_memes_on_uid", :unique => true
 
   create_table "roles", :force => true do |t|
     t.string   "name"

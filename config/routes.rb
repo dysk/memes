@@ -1,8 +1,9 @@
 EspagoMemes::Application.routes.draw do
   authenticated :user do
-    root :to => 'home#index'
+    root :to => 'memes#index'
   end
-  root :to => "home#index"
+  root :to => "memes#index"
   devise_for :users
   resources :users
+  resources :memes, only: [:create, :index, :new, :show]
 end

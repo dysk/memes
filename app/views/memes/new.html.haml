@@ -1,0 +1,12 @@
+.row
+  .span2
+    %p
+      =link_to(t('meme.link.index'), memes_path)
+  .span10
+    = form_for @meme do |f|
+      = f.label :text_upper, t('meme.text_upper')
+      = f.text_field :text_upper
+      = f.label :text_lower, t('meme.text_lower')
+      = f.text_field :text_lower
+      %br
+      = f.submit t('meme.new.submit'), class: 'btn-primary'

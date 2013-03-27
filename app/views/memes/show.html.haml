@@ -1,0 +1,13 @@
+.row
+  .span2
+    %p
+      =link_to(t('meme.link.index'), memes_path)
+    %p
+      =link_to(t('meme.link.new_meme'), new_meme_path)
+  .span6
+    =image_tag(meme_path(@meme.uid, format: 'jpg'))
+  .span4
+    %p="dodany: #{@meme.created_at_human}"
+    %p
+      ="autor : "
+      =link_to(@meme.user_name, user_path(@meme.user_id))
