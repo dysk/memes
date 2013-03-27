@@ -3,10 +3,10 @@
     %p
       =link_to(t('meme.link.index'), memes_path)
   .span10
-    = form_for @meme do |f|
-      = f.label :text_upper, t('meme.text_upper')
-      = f.text_field :text_upper
-      = f.label :text_lower, t('meme.text_lower')
-      = f.text_field :text_lower
-      %br
-      = f.submit t('meme.new.submit'), class: 'btn-primary'
+    %h2=t('meme.new.header')
+    = simple_form_for(@meme, :as => 'meme', :url => '/memes', :html => {:class => 'form-vertical' }) do |f|
+      = f.error_notification
+      = display_base_errors @meme
+      = f.input :text_upper, :label => t('meme.text_upper'), :autofocus => true
+      = f.input :text_lower, :label => t('meme.text_lower'), :required => true
+      = f.button :submit, t('meme.new.submit'), :class => 'btn-primary'

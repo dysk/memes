@@ -43,6 +43,7 @@ en:
     index:
       header: Lista memów
     new:
+      header: Nowy mem
       submit: Stwórz
     link:
       index: Lista memów
@@ -51,6 +52,10 @@ en:
     show:
       header: Użytkownik %{user_name}
       memes_count: Liczba memów
+    updated: Użytkownik zaktualizowany.
+    couldnt_update: Nie można zaktualizować użytkownika.
+    deleted: Użytkownik usunięty.
+    cant_update_self: Nie możesz usunąć siebie!
   notice:
     meme:
       created: 'Nowy mem utworzony!'
@@ -62,6 +67,9 @@ en:
     previous_label: "&#8592; Poprzednia"
     next_label: "Następna &#8594;"
     page_gap: "&hellip;"
+
+  cancan:
+    access_denied: "Nie masz odpowiednich uprawnień."
 
   devise:
     confirmations:

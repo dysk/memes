@@ -24,7 +24,7 @@ class MemesController < ApplicationController
     if @meme.save
       redirect_to meme_path(@meme.uid), notice: t('notice.meme.created')
     else
-      redirect_to memes_path, alert: t('alert.meme.not_created')
+      render :new, alert: t('alert.meme.not_created')
     end
   end
 end
