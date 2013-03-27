@@ -1,0 +1,13 @@
+.row
+  .span2
+    %p
+      =link_to(t('image.link.index'), images_path)
+  .span10
+    %h2=t('image.new.header')
+    = simple_form_for(@image, :as => 'image', :url => '/images', :html => {:class => 'form-vertical', :multipart => true}) do |f|
+      = f.error_notification
+      = display_base_errors @image
+      = f.input :name, :label => t('image.name'), :autofocus => true
+      = f.input :description, :as => :string, :label => t('image.description')
+      = f.input :file, :as => :file, :label => t('image.picture')
+      = f.button :submit, t('image.new.submit'), :class => 'btn-primary'

@@ -6,11 +6,13 @@ class Meme < ActiveRecord::Base
 
   after_initialize :default_values
 
-  attr_accessor :text_upper, :text_lower
-  attr_accessible :text_upper, :text_lower
+  attr_accessor :text_upper, :text_lower, :image_id
+  attr_accessible :text_upper, :text_lower, :image_id
 
-  validates :text_upper, presence: true #{ if: Proc.new {|meme| meme.text_lower.blank?} }
-  validates :text_lower, presence: true #{ if: Proc.new {|meme| meme.text_upper.blank?} }
+  validates :text_upper, presence: true, length: { in: 1..30 }
+  validates :text_lower, presence: true, length: { in: 1..30 }
+  validates :image_id, inclusion: { in: Image.all.map{|i| i.id.to_s}, message: I18n.t('image.not_included') }
+
 
   def save
     generate_image if valid?
@@ -18,7 +20,8 @@ class Meme < ActiveRecord::Base
   end
 
   def generate_image
-    image = Magick::Image.read("#{::Rails.root.to_s}/public/images/kalis.jpg").first
+    image = Magick::Image.from_blob(Image.find(self.image_id).picture).first
+
     upper = Magick::Draw.new
     upper.stroke('#000000')
     upper.fill('#ffffff')

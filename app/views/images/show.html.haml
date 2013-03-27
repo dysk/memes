@@ -1,0 +1,12 @@
+.row
+  .span2
+    %p
+      =link_to(t('image.link.index'), images_path)
+    %p
+      =link_to(t('image.link.new_image'), new_image_path)
+  .span6
+    =image_tag(image_path(@image, format: 'jpg'))
+  .span4
+    %p="dodany: #{@image.created_at_human}"
+    %p="rozmiar: #{@image.width}x#{@image.height}"
+

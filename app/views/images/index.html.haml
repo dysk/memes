@@ -1,0 +1,18 @@
+%p
+  %strong=link_to(t('image.link.new_image'), new_image_path)
+%p
+  = will_paginate @images
+-@images_groups.each do |g|
+  .row.spacer
+    -g.each do |i|
+      -if i
+        .span4
+          =i.name
+          %p
+          =link_to(image_tag(image_path(i, format: 'jpg'), size: '240x200'), image_path(i))
+          %p
+            ="dodany: #{time_ago_in_words(i.created_at)} temu"
+%p.spacer
+  = will_paginate @images
+%p
+  %strong=link_to(t('image.link.new_image'), new_image_path)

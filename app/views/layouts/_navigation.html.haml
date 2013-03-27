@@ -11,7 +11,9 @@
       = link_to t('nav.edit_account'), edit_user_registration_path
     - if current_user.has_role? :admin
       %li
-        = link_to t('nav.admin'), users_path
+        = link_to t('nav.users'), users_path
+      %li
+        = link_to t('nav.images'), images_path
   - else
     %li
       = link_to t('nav.sign_up'), new_user_registration_path

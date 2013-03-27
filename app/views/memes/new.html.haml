@@ -7,6 +7,7 @@
     = simple_form_for(@meme, :as => 'meme', :url => '/memes', :html => {:class => 'form-vertical' }) do |f|
       = f.error_notification
       = display_base_errors @meme
+      = f.input :image_id, :label => t('image.picture'), :collection => Image.all.map{|i| [i.name, i.id]}, :prompt => t('meme.new.prompt')
       = f.input :text_upper, :label => t('meme.text_upper'), :autofocus => true
       = f.input :text_lower, :label => t('meme.text_lower'), :required => true
       = f.button :submit, t('meme.new.submit'), :class => 'btn-primary'
