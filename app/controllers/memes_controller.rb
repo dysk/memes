@@ -8,9 +8,14 @@ class MemesController < ApplicationController
 
   def show
     @meme = Meme.where(uid: params[:id]).first!
-    respond_to do |format|
-      format.html
-      format.jpg {send_data @meme.picture, type:'image/jpg', disposition: 'inline'}
+    if stale?(:last_modified => @meme.updated_at.utc, :etag => @meme)
+      respond_to do |format|
+        format.html {expires_in 10.minutes}
+        format.jpg {
+          expires_in 5.years
+          send_data @meme.picture, type:'image/jpg', disposition: 'inline'
+        }
+      end
     end
   end
 

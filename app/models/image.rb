@@ -1,5 +1,5 @@
 class Image < ActiveRecord::Base
-  self.per_page = 12
+  self.per_page = 18
   has_many :memes
 
   attr_accessor :file

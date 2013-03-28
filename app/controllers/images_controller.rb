@@ -34,9 +34,14 @@ class ImagesController < ApplicationController
 
   def show
     @image = Image.find(params[:id])
-    respond_to do |format|
-      format.html
-      format.jpg {send_data @image.picture, type:'image/jpg', disposition: 'inline'}
+    if stale?(:last_modified => @image.updated_at.utc, :etag => @image)
+      respond_to do |format|
+        format.html {expires_in 10.minutes}
+        format.jpg {
+          expires_in 5.years
+          send_data @image.picture, type:'image/jpg', disposition: 'inline'
+        }
+      end
     end
-  end
+  end 
 end

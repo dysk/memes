@@ -8,6 +8,6 @@
       = f.error_notification
       = display_base_errors @image
       = f.input :name, :label => t('image.name'), :autofocus => true
-      = f.input :description, :as => :string, :label => t('image.description')
+      =# f.input :description, :as => :string, :label => t('image.description')
       = f.input :file, :as => :file, :label => t('image.picture')
       = f.button :submit, t('image.new.submit'), :class => 'btn-primary'
