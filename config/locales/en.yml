@@ -63,6 +63,8 @@ en:
       index: Lista obrazków
       new_image: Nowy obrazek
     not_included: Nie ma takiego obrazka
+    errors:
+      invalid_format: Nieprawidłowy format pliku
   user:
     show:
       header: Użytkownik %{user_name}

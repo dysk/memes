@@ -13,7 +13,7 @@ class ImagesController < ApplicationController
 
   def index
     @images = Image.order('created_at DESC').paginate(page: params[:page])
-    @images_groups = @images.in_groups_of(3)
+    @images_groups = @images.in_groups_of(5)
   end
 
   def new

@@ -23,6 +23,7 @@ class MemesController < ApplicationController
   def create
     @meme = current_user.memes.build(params[:meme])
     if @meme.save
+      session[:image_id] = nil
       redirect_to meme_path(@meme.uid), notice: t('notice.meme.created')
     else
       render :new, alert: t('alert.meme.not_created')

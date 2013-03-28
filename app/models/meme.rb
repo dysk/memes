@@ -12,7 +12,7 @@ class Meme < ActiveRecord::Base
 
   validates :text_upper, presence: true, length: { in: 1..30 }
   validates :text_lower, presence: true, length: { in: 1..30 }
-  validates :image_ref, inclusion: { in: Image.all.map{|i| i.id.to_s}, message: I18n.t('image.not_included') }
+  validates :image_ref, inclusion: { in: Proc.new {Image.all.map{|i| i.id.to_s}}, message: I18n.t('image.not_included') }
 
 
   def save

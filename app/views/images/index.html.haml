@@ -7,10 +7,10 @@
   .row.spacer
     -g.each do |i|
       -if i
-        .span4
-          =i.name
+        .span2
+          %strong=i.name
           %p
-          =link_to(image_tag(image_path(i, format: 'jpg'), size: '240x200'), image_path(i))
+          =link_to(image_tag(image_path(i, format: 'jpg'), size: '150x100'), image_path(i))
           %p
             ="dodany: #{time_ago_in_words(i.created_at)} temu"
 %p.spacer

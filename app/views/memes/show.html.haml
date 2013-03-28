@@ -10,6 +10,8 @@
   .span6
     =image_tag(meme_path(@meme.uid, format: 'jpg'))
   .span4
+    %p
+      %h5"#{@meme.text_upper}, #{@meme.text_lower}"
     %p="dodany: #{@meme.created_at_human}"
     %p
       ="autor : "
