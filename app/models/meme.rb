@@ -7,7 +7,7 @@ class Meme < ActiveRecord::Base
 
   after_initialize :default_values
 
-  attr_accessor :text_upper, :text_lower, :image_ref
+  attr_accessor :image_ref
   attr_accessible :text_upper, :text_lower, :image_ref
 
   validates :text_upper, presence: true, length: { in: 1..30 }

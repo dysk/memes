@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130327233759) do
+ActiveRecord::Schema.define(:version => 20130328001354) do
 
   create_table "images", :force => true do |t|
     t.string   "name"
@@ -27,6 +27,8 @@ ActiveRecord::Schema.define(:version => 20130327233759) do
     t.integer  "user_id"
     t.integer  "image_id"
     t.string   "uid"
+    t.string   "text_upper"
+    t.string   "text_lower"
     t.binary   "picture",    :limit => 16777215
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false

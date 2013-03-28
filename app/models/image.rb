@@ -1,4 +1,6 @@
 class Image < ActiveRecord::Base
+  has_many :memes
+
   attr_accessor :file
   attr_accessible :name, :description, :file
 
