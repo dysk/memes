@@ -1,4 +1,11 @@
 class Meme < ActiveRecord::Base
+  BORDER_X_SIZE = 100
+  BORDER_Y_SIZE = 100
+  X_SIZE = 600
+  Y_SIZE = 600
+  FONT_BASE_SIZE = 48
+  MAX_NORMAL_TEXT_LENGTH = 25
+
   include GenerateId
   self.per_page = 6
 
@@ -10,11 +17,11 @@ class Meme < ActiveRecord::Base
   attr_accessor :image_ref, :background
   attr_accessible :text_upper, :text_lower, :image_ref
 
-  validates :text_upper, presence: true, length: { in: 1..45 }
-  validates :text_lower, presence: true, length: { in: 1..45 }
+  validates :text_upper, presence: true, length: { in: 1..35 }
+  validates :text_lower, presence: true, length: { in: 1..35 }
   validates :image_ref, inclusion: { in: Proc.new {Image.all.map{|i| i.id.to_s}}, message: I18n.t('image.not_included') }
 
-  COLORS = ["tomato", "purple", "lime", "blue", "dark orange", "fuchsia", "firebrick", "indigo", "tomato", "teal", "khaki"]
+  COLORS = ["aqua", "blue", "blue violet", "brown", "crimson", "dark blue", "dark green", "dark orange", "dark red", "firebrick", "fuchsia", "indigo", "khaki", "lime", "olive", "orange red", "purple", "sea green", "sky blue", "steel blue", "turquoise", "teal", "tomato", "yellow green"]
 
   def save
     if self.image_ref.blank?
@@ -28,7 +35,7 @@ class Meme < ActiveRecord::Base
 
   def generate_image
     image = Magick::Image.from_blob(self.image.picture).first
-    self.background = image.border(100,100, COLORS.sample)
+    self.background = image.border(BORDER_X_SIZE,BORDER_Y_SIZE, COLORS.sample)
 
     star = Magick::Draw.new
     star.fill(COLORS.sample)
@@ -43,7 +50,7 @@ class Meme < ActiveRecord::Base
     upper.stroke('#000000')
     upper.fill('#ffffff')
     upper.gravity(Magick::NorthGravity)
-    Rails.logger.info "\n\nSIZE U: #{font_size(self.text_upper)}\n"
+    #Rails.logger.info "\n\nSIZE U: #{font_size(self.text_upper)}\n"
     upper.pointsize(font_size(self.text_upper))
     upper.stroke_width(stroke_width(self.text_lower))
     upper.stroke('#000000')
@@ -57,7 +64,7 @@ class Meme < ActiveRecord::Base
     lower.stroke('#000000')
     lower.fill('#ffffff')
     lower.gravity(Magick::SouthGravity)
-    Rails.logger.info "\n\nSIZE L: #{font_size(self.text_lower)}\n"
+    #Rails.logger.info "\n\nSIZE L: #{font_size(self.text_lower)}\n"
     lower.pointsize(font_size(self.text_lower))
     lower.stroke_width(stroke_width(self.text_lower))
     lower.stroke('#000000')
@@ -88,25 +95,25 @@ class Meme < ActiveRecord::Base
 
   def lower_text_y_position
     # grubosc paska/2 - wielkosc czcionki/2
-    50-font_size(self.text_lower)/2
+    BORDER_Y_SIZE/2-font_size(self.text_lower)/2
   end
 
   def upper_text_y_position
     # grubosc paska/2 - wielkosc czcionki/2
-    50-font_size(self.text_upper)/2-5
+    BORDER_Y_SIZE/2-font_size(self.text_upper)/2-5
   end
 
   def font_size(text)
-    size = ((self.background.columns/600.0)*48.0)
-    if text.length > 25
-      return (size*25.0/text.length).to_i
+    size = ((self.background.columns/Y_SIZE)*FONT_BASE_SIZE)
+    if text.length > MAX_NORMAL_TEXT_LENGTH
+      return (size*MAX_NORMAL_TEXT_LENGTH/text.length).to_i
     else
       return size.to_i
     end
   end
 
   def stroke_width(text)
-    font_size(text) > 50 ? 2 : 1
+    font_size(text) > FONT_BASE_SIZE+2 ? 2 : 1
   end
 
   def default_values

@@ -1,4 +1,7 @@
 class Image < ActiveRecord::Base
+  X_SIZE = 400
+  Y_SIZE = 400
+
   self.per_page = 18
   has_many :memes
 
@@ -26,9 +29,9 @@ class Image < ActiveRecord::Base
   def set_picture
     self.picture ||= self.file.tempfile.try(:read) unless self.file.nil?
     raise Magick::ImageMagickError if self.picture.nil?
-    image = Magick::Image.from_blob(self.picture).first.resize_to_fit(600,600)
-    self.width   = image.inspect.strip.split('=>')[1].split(' ')[0].split('x')[0]
-    self.height  = image.inspect.strip.split('=>')[1].split(' ')[0].split('x')[1]
+    image = Magick::Image.from_blob(self.picture).first.resize_to_fit(X_SIZE,Y_SIZE)
+    self.width   = image.rows
+    self.height  = image.columns
     self.picture = image.to_blob
   end
 end
