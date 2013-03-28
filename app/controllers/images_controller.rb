@@ -38,7 +38,7 @@ class ImagesController < ApplicationController
       respond_to do |format|
         format.html {expires_in 10.minutes}
         format.jpg {
-          expires_in 5.years
+          expires_in 5.years, :public => true
           send_data @image.picture, type:'image/jpg', disposition: 'inline'
         }
       end
