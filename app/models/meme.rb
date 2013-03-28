@@ -27,19 +27,20 @@ class Meme < ActiveRecord::Base
     upper = Magick::Draw.new
     upper.stroke('#000000')
     upper.fill('#ffffff')
-    upper.pointsize('36')
-    upper.stroke_width(1)
+    Rails.logger.info "\n\nSIZE: #{font_size}\n"
+    upper.pointsize(font_size)
+    upper.stroke_width(stroke_width)
     upper.stroke('#000000')
     upper.font_weight = Magick::BoldWeight
     upper.font_style  = Magick::NormalStyle
-    upper.text(x = upper_text_x_position, y = 50, text = self.text_upper)
+    upper.text(x = upper_text_x_position, y = upper_text_y_position, text = self.text_upper)
     upper.draw(image)
 
     lower = Magick::Draw.new
     lower.stroke('#000000')
     lower.fill('#ffffff')
-    lower.pointsize('36')
-    lower.stroke_width(1)
+    lower.pointsize(font_size)
+    lower.stroke_width(stroke_width)
     lower.stroke('#000000')
     lower.font_weight = Magick::BoldWeight
     lower.font_style  = Magick::NormalStyle
@@ -65,7 +66,11 @@ class Meme < ActiveRecord::Base
   private
 
   def lower_text_y_position
-    (self.image.height*0.9).to_i
+    (self.image.height*0.95).to_i
+  end
+
+  def upper_text_y_position
+    (self.image.height*0.08).to_i+(font_size/10.0).to_i
   end
 
   def lower_text_x_position
@@ -78,6 +83,16 @@ class Meme < ActiveRecord::Base
 
   def center_text_position(text)
     ((3.03*(33-text.length)/200)*self.image.width).to_i
+  end
+
+  def font_size
+    Rails.logger.info "\n\nFONT SIZE: #{((self.image.width/600.0)*38.0).to_i}\n"
+    ((self.image.width/600.0)*38.0).to_i
+  end
+
+  def stroke_width
+    Rails.logger.info "\n\nSTROKE SIZE: #{font_size > 30 ? 2 : 1}\n"
+    font_size > 30 ? 2 : 1
   end
 
   def default_values
