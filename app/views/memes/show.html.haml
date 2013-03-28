@@ -8,7 +8,7 @@
     %p
       =link_to(t('meme.link.index'), memes_path)
   .span6
-    =image_tag(meme_path(@meme.uid, format: 'jpg'))
+    =image_tag("memes/#{@meme.uid}.jpg", size: '240x240')#image_tag("assets/memes/#{@meme.uid}.jpg", format: 'jpg')
   .span4
     %p
       %h5"#{@meme.text_upper}, #{@meme.text_lower}"

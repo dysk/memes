@@ -33,6 +33,11 @@ class Meme < ActiveRecord::Base
     super
   end
 
+  def destroy
+    FileUtils.rm("app/assets/images/memes/#{self.uid}.jpg")
+    super
+  end
+
   def generate_image
     image = Magick::Image.from_blob(self.image.picture).first
     self.background = image.border(BORDER_X_SIZE,BORDER_Y_SIZE, COLORS.sample)
@@ -73,8 +78,8 @@ class Meme < ActiveRecord::Base
     #Rails.logger.info "\n\nL POS: #{lower_text_y_position}\n"
     lower.text(x = 0, y = lower_text_y_position, text = self.text_lower)
     lower.draw(self.background)
-
-    self.picture = self.background.to_blob
+    background.write("app/assets/images/memes/#{self.uid}.jpg")
+    #self.picture = self.background.to_blob
   end
 
   def created_at_human

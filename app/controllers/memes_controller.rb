@@ -10,11 +10,11 @@ class MemesController < ApplicationController
     @meme = Meme.where(uid: params[:id]).first!
     if stale?(:last_modified => @meme.updated_at.utc, :etag => @meme)
       respond_to do |format|
-        format.html {expires_in 10.minutes}
-        format.jpg {
-          expires_in 5.years, :public => true
-          send_data @meme.picture, type:'image/jpg', disposition: 'inline'
-        }
+        format.html {expires_in 7.days}
+        #format.jpg {
+        #  expires_in 5.years, :public => true#
+        #  send_data @meme.picture, type:'imag#e/jpg', disposition: 'inline'
+        #}
       end
     end
   end
