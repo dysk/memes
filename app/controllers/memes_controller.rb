@@ -15,12 +15,13 @@ class MemesController < ApplicationController
   end
 
   def new
+    session[:image_id] = params[:id]
+    @image = Image.find(session[:image_id]) unless session[:image_id].nil?
     @meme = Meme.new
   end
   
   def create
     @meme = current_user.memes.build(params[:meme])
-    #@meme = Meme.new(params[:meme])
     if @meme.save
       redirect_to meme_path(@meme.uid), notice: t('notice.meme.created')
     else

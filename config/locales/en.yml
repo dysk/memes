@@ -35,6 +35,7 @@ en:
     edit_account: Edytuj konto
     users: Userzy
     images: Obrazki
+    memes: Memy
     sign_up: Zarejestruj
   meme:
     text_upper: Górny napis
@@ -50,6 +51,7 @@ en:
     link:
       index: Lista memów
       new_meme: Nowy mem
+      new_image_meme: Mem z tego obrazka
   image:
     name: Nazwa
     description: Opis

@@ -1,5 +1,9 @@
 = link_to t('nav.title'), root_path, :class => 'brand'
 %ul.nav
+  %li
+    = link_to t('nav.memes'), memes_path
+  %li
+    = link_to t('nav.images'), images_path
   - if user_signed_in?
     %li
       = link_to t('nav.logout'), destroy_user_session_path, :method=>'delete'
@@ -12,8 +16,6 @@
     - if current_user.has_role? :admin
       %li
         = link_to t('nav.users'), users_path
-      %li
-        = link_to t('nav.images'), images_path
   - else
     %li
       = link_to t('nav.sign_up'), new_user_registration_path

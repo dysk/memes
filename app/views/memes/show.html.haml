@@ -1,9 +1,12 @@
 .row
   .span2
-    %p
-      =link_to(t('meme.link.index'), memes_path)
+    -if @meme.image
+      %p
+        %strong=link_to(t('meme.link.new_image_meme'), new_image_meme_path(@meme.image))
     %p
       =link_to(t('meme.link.new_meme'), new_meme_path)
+    %p
+      =link_to(t('meme.link.index'), memes_path)
   .span6
     =image_tag(meme_path(@meme.uid, format: 'jpg'))
   .span4

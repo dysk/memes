@@ -1,5 +1,5 @@
 class ImagesController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, except: [:index, :show]
 
   def create
     authorize! :create, @image, :message => I18n.t('cancan.access_denied')
@@ -12,7 +12,6 @@ class ImagesController < ApplicationController
   end
 
   def index
-    authorize! :index, @image, :message => I18n.t('cancan.access_denied')
     @images = Image.order('created_at DESC').paginate(page: params[:page])
     @images_groups = @images.in_groups_of(3)
   end

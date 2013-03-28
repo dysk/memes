@@ -1,9 +1,12 @@
 .row
   .span2
     %p
-      =link_to(t('image.link.index'), images_path)
+      %strong=link_to(t('meme.link.new_image_meme'), new_image_meme_path(@image))
     %p
-      =link_to(t('image.link.new_image'), new_image_path)
+      =link_to(t('image.link.index'), images_path)
+    - if current_user && current_user.has_role?(:admin)
+      %p
+        =link_to(t('image.link.new_image'), new_image_path)
   .span6
     =image_tag(image_path(@image, format: 'jpg'))
   .span4

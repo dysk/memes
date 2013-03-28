@@ -1,5 +1,6 @@
-%p
-  %strong=link_to(t('image.link.new_image'), new_image_path)
+- if current_user && current_user.has_role?(:admin)
+  %p
+    %strong=link_to(t('image.link.new_image'), new_image_path)
 %p
   = will_paginate @images
 -@images_groups.each do |g|
@@ -14,5 +15,6 @@
             ="dodany: #{time_ago_in_words(i.created_at)} temu"
 %p.spacer
   = will_paginate @images
-%p
-  %strong=link_to(t('image.link.new_image'), new_image_path)
+- if current_user && current_user.has_role?(:admin)
+  %p
+    %strong=link_to(t('image.link.new_image'), new_image_path)
