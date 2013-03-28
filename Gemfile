@@ -28,5 +28,4 @@ gem "better_errors", ">= 0.7.2", :group => :development
 gem "binding_of_caller", ">= 0.7.1", :group => :development, :platforms => [:mri_19, :rbx]
 gem "rmagick", ">= 2.13.2", :require => 'RMagick'
 gem 'will_paginate', '~> 3.0.0'
-gem 'carrierwave'
-gem 'carrierwave-sequel', :require => 'carrierwave/sequel'
+gem 'capistrano'
