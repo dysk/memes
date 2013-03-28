@@ -12,8 +12,8 @@ class ImagesController < ApplicationController
   end
 
   def index
-    @images = Image.order('created_at DESC').paginate(page: params[:page])
-    @images_groups = @images.in_groups_of(5)
+    @images = Image.order('name ASC').paginate(page: params[:page])
+    @images_groups = @images.in_groups_of(6)
   end
 
   def new
