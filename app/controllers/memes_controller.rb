@@ -3,7 +3,7 @@ class MemesController < ApplicationController
 
   def index
     @memes = Meme.order('created_at DESC').paginate(page: params[:page])
-    @memes_groups = @memes.in_groups_of(3)
+    @memes_groups = @memes.in_groups_of(4)
   end
 
   def show

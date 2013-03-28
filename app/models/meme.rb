@@ -7,7 +7,7 @@ class Meme < ActiveRecord::Base
   MAX_NORMAL_TEXT_LENGTH = 25
 
   include GenerateId
-  self.per_page = 6
+  self.per_page = 8
 
   belongs_to :user
   belongs_to :image
