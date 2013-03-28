@@ -7,46 +7,67 @@ class Meme < ActiveRecord::Base
 
   after_initialize :default_values
 
-  attr_accessor :image_ref
+  attr_accessor :image_ref, :background
   attr_accessible :text_upper, :text_lower, :image_ref
 
-  validates :text_upper, presence: true, length: { in: 1..30 }
-  validates :text_lower, presence: true, length: { in: 1..30 }
+  validates :text_upper, presence: true, length: { in: 1..45 }
+  validates :text_lower, presence: true, length: { in: 1..45 }
   validates :image_ref, inclusion: { in: Proc.new {Image.all.map{|i| i.id.to_s}}, message: I18n.t('image.not_included') }
 
+  COLORS = ["tomato", "purple", "lime", "blue", "dark orange", "fuchsia", "firebrick", "indigo", "tomato", "teal", "khaki"]
 
   def save
-    self.image = Image.find(self.image_ref)
+    if self.image_ref.blank?
+      self.errors.add :file, I18n.t('image.errors.invalid_format')
+    else
+      self.image = Image.find(self.image_ref)
+    end
     generate_image if valid?
     super
   end
 
   def generate_image
     image = Magick::Image.from_blob(self.image.picture).first
+    self.background = image.border(100,100, COLORS.sample)
+
+    star = Magick::Draw.new
+    star.fill(COLORS.sample)
+    star.polygon(0,0, 0,self.background.rows/2, self.background.columns/2,self.background.rows/2, self.background.columns/2,0, self.background.columns,0, self.background.columns/2,self.background.rows/2, self.background.columns,self.background.rows/2, self.background.columns,self.background.rows, self.background.columns/2,self.background.rows/2, self.background.columns/2,self.background.rows, 0,self.background.rows, self.background.columns/2,self.background.rows/2)
+    star.draw(self.background)
+
+    embed = Magick::Draw.new
+    embed.composite((self.background.columns-image.columns)/2,(self.background.columns-image.columns)/2, 0,0, image)
+    embed.draw(self.background)
 
     upper = Magick::Draw.new
     upper.stroke('#000000')
     upper.fill('#ffffff')
-    Rails.logger.info "\n\nSIZE: #{font_size}\n"
-    upper.pointsize(font_size)
-    upper.stroke_width(stroke_width)
+    upper.gravity(Magick::NorthGravity)
+    Rails.logger.info "\n\nSIZE U: #{font_size(self.text_upper)}\n"
+    upper.pointsize(font_size(self.text_upper))
+    upper.stroke_width(stroke_width(self.text_lower))
     upper.stroke('#000000')
     upper.font_weight = Magick::BoldWeight
     upper.font_style  = Magick::NormalStyle
-    upper.text(x = upper_text_x_position, y = upper_text_y_position, text = self.text_upper)
-    upper.draw(image)
+    Rails.logger.info "\n\nU POS: #{upper_text_y_position}\n"
+    upper.text(x = 0, y = upper_text_y_position, text = self.text_upper)
+    upper.draw(self.background)
 
     lower = Magick::Draw.new
     lower.stroke('#000000')
     lower.fill('#ffffff')
-    lower.pointsize(font_size)
-    lower.stroke_width(stroke_width)
+    lower.gravity(Magick::SouthGravity)
+    Rails.logger.info "\n\nSIZE L: #{font_size(self.text_lower)}\n"
+    lower.pointsize(font_size(self.text_lower))
+    lower.stroke_width(stroke_width(self.text_lower))
     lower.stroke('#000000')
     lower.font_weight = Magick::BoldWeight
     lower.font_style  = Magick::NormalStyle
-    lower.text(x = lower_text_x_position, y = lower_text_y_position, text = self.text_lower)
-    lower.draw(image)
-    self.picture = image.to_blob
+    Rails.logger.info "\n\nL POS: #{lower_text_y_position}\n"
+    lower.text(x = 0, y = lower_text_y_position, text = self.text_lower)
+    lower.draw(self.background)
+
+    self.picture = self.background.to_blob
   end
 
   def created_at_human
@@ -66,33 +87,26 @@ class Meme < ActiveRecord::Base
   private
 
   def lower_text_y_position
-    (self.image.height*0.95).to_i
+    # grubosc paska/2 - wielkosc czcionki/2
+    50-font_size(self.text_lower)/2
   end
 
   def upper_text_y_position
-    (self.image.height*0.08).to_i+(font_size/10.0).to_i
+    # grubosc paska/2 - wielkosc czcionki/2
+    50-font_size(self.text_upper)/2-5
   end
 
-  def lower_text_x_position
-    center_text_position(self.text_lower)
+  def font_size(text)
+    size = ((self.background.columns/600.0)*48.0)
+    if text.length > 25
+      return (size*25.0/text.length).to_i
+    else
+      return size.to_i
+    end
   end
 
-  def upper_text_x_position
-    center_text_position(self.text_upper)
-  end
-
-  def center_text_position(text)
-    ((3.03*(33-text.length)/200)*self.image.width).to_i
-  end
-
-  def font_size
-    Rails.logger.info "\n\nFONT SIZE: #{((self.image.width/600.0)*38.0).to_i}\n"
-    ((self.image.width/600.0)*38.0).to_i
-  end
-
-  def stroke_width
-    Rails.logger.info "\n\nSTROKE SIZE: #{font_size > 30 ? 2 : 1}\n"
-    font_size > 30 ? 2 : 1
+  def stroke_width(text)
+    font_size(text) > 50 ? 2 : 1
   end
 
   def default_values

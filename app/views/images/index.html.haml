@@ -1,3 +1,4 @@
+%h2=t('image.index.header')
 - if current_user && current_user.has_role?(:admin)
   %p
     %strong=link_to(t('image.link.new_image'), new_image_path)
@@ -10,9 +11,12 @@
         .span2
           %strong=i.name
           %p
-          =link_to(image_tag(image_path(i, format: 'jpg'), size: '150x100'), image_path(i))
+          =link_to(image_tag(image_path(i, format: 'jpg'), size: '160x160'), image_path(i))
           %p
             ="dodany: #{time_ago_in_words(i.created_at)} temu"
+          - if current_user && current_user.has_role?(:admin)
+            %p
+              =button_to(t('image.link.destroy'), i, :method=>:delete, :class=>:destroy, :confirm => t('image.link.confirmation'))
 %p.spacer
   = will_paginate @images
 - if current_user && current_user.has_role?(:admin)

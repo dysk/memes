@@ -16,3 +16,6 @@
     %p
       ="autor : "
       =link_to(@meme.user_name, user_path(@meme.user_id))
+    - if current_user && current_user.has_role?(:admin)
+      %p
+        =button_to(t('meme.link.destroy'), @meme, :method=>:delete, :class=>:destroy, :confirm => t('meme.link.confirmation'))

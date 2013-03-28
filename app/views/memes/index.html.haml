@@ -1,5 +1,7 @@
 %p
-  %strong=link_to(t('meme.link.new_meme'), new_meme_path)
+  %strong=link_to(t('meme.link.new_meme_from_image'), images_path)
+%p
+  =link_to(t('meme.link.new_meme'), new_meme_path)
 %p
   = will_paginate @memes
 -@memes_groups.each do |g|
@@ -7,11 +9,13 @@
     -g.each do |m|
       -if m
         .span4
-          =link_to(image_tag(meme_path(m.uid, format: 'jpg'), size: '240x200'), meme_path(m.uid))
+          =link_to(image_tag(meme_path(m.uid, format: 'jpg'), size: '320x320'), meme_path(m.uid))
           %p
             ="dodany: #{time_ago_in_words(m.created_at)} temu przez "
             =link_to(m.user_name, user_path(m.user_id))
 %p.spacer
   = will_paginate @memes
 %p
-  %strong=link_to(t('meme.link.new_meme'), new_meme_path)
+  =link_to(t('meme.link.new_meme'), new_meme_path)
+%p
+  %strong=link_to(t('meme.link.new_meme_from_image'), images_path)

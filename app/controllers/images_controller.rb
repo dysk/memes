@@ -11,6 +11,17 @@ class ImagesController < ApplicationController
     end
   end
 
+  def destroy
+    authorize! :destroy, @image, :message => I18n.t('cancan.access_denied')
+    @image = Image.find(params[:id])
+    notice = if @image.destroy
+      t('notice.image.destroyed')
+    else
+      t('notice.image.not_destroyed')
+    end
+    redirect_to images_path, notice: notice
+  end
+
   def index
     @images = Image.order('name ASC').paginate(page: params[:page])
     @images_groups = @images.in_groups_of(6)

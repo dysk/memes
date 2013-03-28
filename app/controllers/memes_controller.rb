@@ -29,4 +29,15 @@ class MemesController < ApplicationController
       render :new, alert: t('alert.meme.not_created')
     end
   end
+
+  def destroy
+    authorize! :destroy, @meme, :message => I18n.t('cancan.access_denied')
+    @meme = Meme.find(params[:id])
+    notice = if @meme.destroy
+      t('notice.meme.destroyed')
+    else
+      t('notice.meme.not_destroyed')
+    end
+    redirect_to memes_path, notice: notice
+  end
 end

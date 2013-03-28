@@ -52,16 +52,23 @@ en:
       index: Lista memów
       new_meme: Nowy mem
       new_image_meme: Mem z tego obrazka
+      new_meme_from_image: Nowy mem z obrazka
+      destroy: Usuń
+      confirmation: "Na pewno?"
   image:
     name: Nazwa
     description: Opis
     picture: Obraz
+    index:
+      header: "Wybierz obrazek"
     new:
       header: Nowy obrazek
       submit: Dodaj
     link:
       index: Lista obrazków
       new_image: Nowy obrazek
+      destroy: Usuń
+      confirmation: "Na pewno?"
     not_included: Nie ma takiego obrazka
     errors:
       invalid_format: Nieprawidłowy format pliku
@@ -76,8 +83,12 @@ en:
   notice:
     meme:
       created: 'Nowy mem utworzony!'
+      destroyed: "Usunięto mem."
+      not_destroyed: "Nie udało się usunąć mema"
     image:
       created: "Dodano nowy obrazek."
+      destroyed: "Usunięto obrazek."
+      not_destroyed: "Nie udało się usunąć obrazka"
   alert:
     meme:
       not_created: 'Nie udało się utworzyć mema!'

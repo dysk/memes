@@ -5,8 +5,8 @@ EspagoMemes::Application.routes.draw do
   root :to => "memes#index"
   devise_for :users
   resources :users
-  resources :memes, only: [:create, :index, :new, :show]
-  resources :images do
+  resources :memes, only: [:create, :destroy, :index, :new, :show]
+  resources :images, only: [:create, :destroy, :index, :new, :show] do
     member do
       resources :memes, only: [:new, :create], as: :image_meme
     end
