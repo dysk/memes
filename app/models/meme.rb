@@ -56,7 +56,7 @@ class Meme < ActiveRecord::Base
     upper.stroke('#000000')
     upper.font_weight = Magick::BoldWeight
     upper.font_style  = Magick::NormalStyle
-    Rails.logger.info "\n\nU POS: #{upper_text_y_position}\n"
+    #Rails.logger.info "\n\nU POS: #{upper_text_y_position}\n"
     upper.text(x = 0, y = upper_text_y_position, text = self.text_upper)
     upper.draw(self.background)
 
@@ -70,7 +70,7 @@ class Meme < ActiveRecord::Base
     lower.stroke('#000000')
     lower.font_weight = Magick::BoldWeight
     lower.font_style  = Magick::NormalStyle
-    Rails.logger.info "\n\nL POS: #{lower_text_y_position}\n"
+    #Rails.logger.info "\n\nL POS: #{lower_text_y_position}\n"
     lower.text(x = 0, y = lower_text_y_position, text = self.text_lower)
     lower.draw(self.background)
 
@@ -104,9 +104,9 @@ class Meme < ActiveRecord::Base
   end
 
   def font_size(text)
-    size = ((self.background.columns/Y_SIZE)*FONT_BASE_SIZE)
+    size = ((self.background.columns/Y_SIZE.to_f)*FONT_BASE_SIZE)
     if text.length > MAX_NORMAL_TEXT_LENGTH
-      return (size*MAX_NORMAL_TEXT_LENGTH/text.length).to_i
+      return (size*MAX_NORMAL_TEXT_LENGTH/text.length.to_f).to_i
     else
       return size.to_i
     end
