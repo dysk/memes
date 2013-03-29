@@ -4,7 +4,7 @@ class Meme < ActiveRecord::Base
   X_SIZE = 600
   Y_SIZE = 600
   FONT_BASE_SIZE = 48
-  MAX_NORMAL_TEXT_LENGTH = 25
+  MAX_NORMAL_TEXT_LENGTH = 20
 
   MEMES_DIR = 'public/memes'
 
