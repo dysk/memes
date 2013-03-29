@@ -4,7 +4,9 @@ class Meme < ActiveRecord::Base
   X_SIZE = 600
   Y_SIZE = 600
   FONT_BASE_SIZE = 48
-  MAX_NORMAL_TEXT_LENGTH = 25
+  MAX_NORMAL_TEXT_LENGTH = 20
+
+  MEMES_DIR = 'public/memes'
 
   include GenerateId
   self.per_page = 8
@@ -29,52 +31,25 @@ class Meme < ActiveRecord::Base
     else
       self.image = Image.find(self.image_ref)
     end
-    generate_image if valid?
+    generate_meme if valid?
     super
   end
 
-  def generate_image
+  def destroy
+    FileUtils.rm("#{MEMES_DIR}/#{self.uid}.jpg")
+    super
+  end
+
+  def generate_meme
     image = Magick::Image.from_blob(self.image.picture).first
+    image.format = "JPG"
     self.background = image.border(BORDER_X_SIZE,BORDER_Y_SIZE, COLORS.sample)
 
-    star = Magick::Draw.new
-    star.fill(COLORS.sample)
-    star.polygon(0,0, 0,self.background.rows/2, self.background.columns/2,self.background.rows/2, self.background.columns/2,0, self.background.columns,0, self.background.columns/2,self.background.rows/2, self.background.columns,self.background.rows/2, self.background.columns,self.background.rows, self.background.columns/2,self.background.rows/2, self.background.columns/2,self.background.rows, 0,self.background.rows, self.background.columns/2,self.background.rows/2)
-    star.draw(self.background)
+    draw_star
+    insert_picture(image)
+    insert_texts
 
-    embed = Magick::Draw.new
-    embed.composite((self.background.columns-image.columns)/2,(self.background.columns-image.columns)/2, 0,0, image)
-    embed.draw(self.background)
-
-    upper = Magick::Draw.new
-    upper.stroke('#000000')
-    upper.fill('#ffffff')
-    upper.gravity(Magick::NorthGravity)
-    #Rails.logger.info "\n\nSIZE U: #{font_size(self.text_upper)}\n"
-    upper.pointsize(font_size(self.text_upper))
-    upper.stroke_width(stroke_width(self.text_lower))
-    upper.stroke('#000000')
-    upper.font_weight = Magick::BoldWeight
-    upper.font_style  = Magick::NormalStyle
-    #Rails.logger.info "\n\nU POS: #{upper_text_y_position}\n"
-    upper.text(x = 0, y = upper_text_y_position, text = self.text_upper)
-    upper.draw(self.background)
-
-    lower = Magick::Draw.new
-    lower.stroke('#000000')
-    lower.fill('#ffffff')
-    lower.gravity(Magick::SouthGravity)
-    #Rails.logger.info "\n\nSIZE L: #{font_size(self.text_lower)}\n"
-    lower.pointsize(font_size(self.text_lower))
-    lower.stroke_width(stroke_width(self.text_lower))
-    lower.stroke('#000000')
-    lower.font_weight = Magick::BoldWeight
-    lower.font_style  = Magick::NormalStyle
-    #Rails.logger.info "\n\nL POS: #{lower_text_y_position}\n"
-    lower.text(x = 0, y = lower_text_y_position, text = self.text_lower)
-    lower.draw(self.background)
-
-    self.picture = self.background.to_blob
+    store
   end
 
   def created_at_human
@@ -92,6 +67,56 @@ class Meme < ActiveRecord::Base
   end
 
   private
+
+  def draw_star
+    star = Magick::Draw.new
+    star.fill(COLORS.sample)
+    star.polygon(0,0, 0,self.background.rows/2, self.background.columns/2,self.background.rows/2, self.background.columns/2,0, self.background.columns,0, self.background.columns/2,self.background.rows/2, self.background.columns,self.background.rows/2, self.background.columns,self.background.rows, self.background.columns/2,self.background.rows/2, self.background.columns/2,self.background.rows, 0,self.background.rows, self.background.columns/2,self.background.rows/2)
+    star.draw(self.background)
+  end
+
+  def insert_picture(image)
+    embed = Magick::Draw.new
+    embed.composite((self.background.columns-image.columns)/2,(self.background.columns-image.columns)/2, 0,0, image)
+    embed.draw(self.background)
+  end
+
+  def insert_texts
+    insert_upper_text
+    insert_lower_text
+  end
+
+  def insert_upper_text
+    upper = Magick::Draw.new
+    upper.stroke('#000000')
+    upper.fill('#ffffff')
+    upper.gravity(Magick::NorthGravity)
+    #Rails.logger.info "\n\nSIZE U: #{font_size(self.text_upper)}\n"
+    upper.pointsize(font_size(self.text_upper))
+    upper.stroke_width(stroke_width(self.text_lower))
+    upper.stroke('#000000')
+    upper.font_weight = Magick::BoldWeight
+    upper.font_style  = Magick::NormalStyle
+    #Rails.logger.info "\n\nU POS: #{upper_text_y_position}\n"
+    upper.text(x = 0, y = upper_text_y_position, text = self.text_upper)
+    upper.draw(self.background)
+  end
+
+  def insert_lower_text
+    lower = Magick::Draw.new
+    lower.stroke('#000000')
+    lower.fill('#ffffff')
+    lower.gravity(Magick::SouthGravity)
+    #Rails.logger.info "\n\nSIZE L: #{font_size(self.text_lower)}\n"
+    lower.pointsize(font_size(self.text_lower))
+    lower.stroke_width(stroke_width(self.text_lower))
+    lower.stroke('#000000')
+    lower.font_weight = Magick::BoldWeight
+    lower.font_style  = Magick::NormalStyle
+    #Rails.logger.info "\n\nL POS: #{lower_text_y_position}\n"
+    lower.text(x = 0, y = lower_text_y_position, text = self.text_lower)
+    lower.draw(self.background)
+  end
 
   def lower_text_y_position
     # grubosc paska/2 - wielkosc czcionki/2
@@ -114,6 +139,28 @@ class Meme < ActiveRecord::Base
 
   def stroke_width(text)
     font_size(text) > FONT_BASE_SIZE+2 ? 2 : 1
+  end
+
+  def store
+    storage_type = SETTINGS.fetch('meme_storage').inquiry
+    if storage_type.both?
+      store_in_db
+      write_to_file
+    elsif storage_type.db?
+      store_in_db
+    elsif storage_type.file?
+      write_to_file
+    else
+      raise "Unsupported storage type"
+    end
+  end
+
+  def write_to_file
+    self.background.write("#{MEMES_DIR}/#{self.uid}.jpg")
+  end
+
+  def store_in_db
+    self.picture = self.background.to_blob
   end
 
   def default_values
