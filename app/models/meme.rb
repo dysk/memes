@@ -6,6 +6,8 @@ class Meme < ActiveRecord::Base
   FONT_BASE_SIZE = 48
   MAX_NORMAL_TEXT_LENGTH = 25
 
+  MEMES_DIR = 'public/memes'
+
   include GenerateId
   self.per_page = 8
 
@@ -34,7 +36,7 @@ class Meme < ActiveRecord::Base
   end
 
   def destroy
-    FileUtils.rm("app/assets/images/memes/#{self.uid}.jpg")
+    FileUtils.rm("#{MEMES_DIR}/#{self.uid}.jpg")
     super
   end
 
@@ -78,7 +80,7 @@ class Meme < ActiveRecord::Base
     #Rails.logger.info "\n\nL POS: #{lower_text_y_position}\n"
     lower.text(x = 0, y = lower_text_y_position, text = self.text_lower)
     lower.draw(self.background)
-    background.write("app/assets/images/memes/#{self.uid}.jpg")
+    background.write("#{MEMES_DIR}/#{self.uid}.jpg")
     #self.picture = self.background.to_blob
   end
 
