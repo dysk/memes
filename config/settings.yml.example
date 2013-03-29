@@ -1,8 +1,11 @@
 development:
   meme_storage: both #db file both
+  watermark: true #true false
 
 production:
-  meme_storage: both
+  meme_storage: both #db file both
+  watermark: true #true false
 
 test:
-  meme_storage: both
+  meme_storage: both #db file both
+  watermark: true #true false

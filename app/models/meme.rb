@@ -41,14 +41,11 @@ class Meme < ActiveRecord::Base
   end
 
   def generate_meme
-    image = Magick::Image.from_blob(self.image.picture).first
-    image.format = "JPG"
-    self.background = image.border(BORDER_X_SIZE,BORDER_Y_SIZE, COLORS.sample)
-
-    draw_star
+    image  = load_image
+    colors = create_background(image)
+    draw_star(colors)
     insert_picture(image)
     insert_texts
-
     store
   end
 
@@ -68,9 +65,26 @@ class Meme < ActiveRecord::Base
 
   private
 
-  def draw_star
+  def load_image
+    mark = Magick::Image.read("public/espago.jpg").first.resize_to_fit(60,60).rotate(-90)
+    image = Magick::Image.from_blob(self.image.picture).first
+    image.format = "JPG"
+    if SETTINGS['watermark']
+      return image.watermark(mark, 0.25, 0, Magick::SouthEastGravity)
+    else
+      return image
+    end
+  end
+
+  def create_background(image)
+    colors = COLORS.shuffle
+    self.background = Magick::Image.new(image.columns, image.rows){self.background_color = "none"; self.format = 'JPG'}.border(BORDER_X_SIZE,BORDER_Y_SIZE, colors.shift)
+    return colors
+  end
+
+  def draw_star(colors = COLORS)
     star = Magick::Draw.new
-    star.fill(COLORS.sample)
+    star.fill(colors.sample)
     star.polygon(0,0, 0,self.background.rows/2, self.background.columns/2,self.background.rows/2, self.background.columns/2,0, self.background.columns,0, self.background.columns/2,self.background.rows/2, self.background.columns,self.background.rows/2, self.background.columns,self.background.rows, self.background.columns/2,self.background.rows/2, self.background.columns/2,self.background.rows, 0,self.background.rows, self.background.columns/2,self.background.rows/2)
     star.draw(self.background)
   end
@@ -91,13 +105,10 @@ class Meme < ActiveRecord::Base
     upper.stroke('#000000')
     upper.fill('#ffffff')
     upper.gravity(Magick::NorthGravity)
-    #Rails.logger.info "\n\nSIZE U: #{font_size(self.text_upper)}\n"
     upper.pointsize(font_size(self.text_upper))
     upper.stroke_width(stroke_width(self.text_lower))
-    upper.stroke('#000000')
     upper.font_weight = Magick::BoldWeight
     upper.font_style  = Magick::NormalStyle
-    #Rails.logger.info "\n\nU POS: #{upper_text_y_position}\n"
     upper.text(x = 0, y = upper_text_y_position, text = self.text_upper)
     upper.draw(self.background)
   end
@@ -107,13 +118,10 @@ class Meme < ActiveRecord::Base
     lower.stroke('#000000')
     lower.fill('#ffffff')
     lower.gravity(Magick::SouthGravity)
-    #Rails.logger.info "\n\nSIZE L: #{font_size(self.text_lower)}\n"
     lower.pointsize(font_size(self.text_lower))
     lower.stroke_width(stroke_width(self.text_lower))
-    lower.stroke('#000000')
     lower.font_weight = Magick::BoldWeight
     lower.font_style  = Magick::NormalStyle
-    #Rails.logger.info "\n\nL POS: #{lower_text_y_position}\n"
     lower.text(x = 0, y = lower_text_y_position, text = self.text_lower)
     lower.draw(self.background)
   end
