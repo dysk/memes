@@ -61,6 +61,7 @@ namespace :symlink do
   task :database, :roles => :app do
     run "ln -fs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
     run "ln -fs #{shared_path}/config/settings.yml #{release_path}/config/settings.yml"
+    run "ln -fs #{shared_path}/memes/ #{release_path}/public/memes"
   end
 end
 
