@@ -6,7 +6,7 @@ class Meme < ActiveRecord::Base
   FONT_BASE_SIZE = 48
   MAX_NORMAL_TEXT_LENGTH = 20
 
-  MEMES_DIR = 'public/memes'
+  MEMES_DIR = 'public/mems'
 
   include GenerateId
   self.per_page = 8
