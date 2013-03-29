@@ -30,6 +30,7 @@ class Image < ActiveRecord::Base
     self.picture ||= self.file.tempfile.try(:read) unless self.file.nil?
     raise Magick::ImageMagickError if self.picture.nil?
     image = Magick::Image.from_blob(self.picture).first.resize_to_fit(X_SIZE,Y_SIZE)
+    image.format = "JPG"
     self.width   = image.rows
     self.height  = image.columns
     self.picture = image.to_blob

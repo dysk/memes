@@ -42,14 +42,14 @@ class Meme < ActiveRecord::Base
 
   def generate_meme
     image = Magick::Image.from_blob(self.image.picture).first
+    image.format = "JPG"
     self.background = image.border(BORDER_X_SIZE,BORDER_Y_SIZE, COLORS.sample)
 
     draw_star
     insert_picture(image)
     insert_texts
 
-    write_to_file
-    store_in_db
+    store
   end
 
   def created_at_human
@@ -139,6 +139,20 @@ class Meme < ActiveRecord::Base
 
   def stroke_width(text)
     font_size(text) > FONT_BASE_SIZE+2 ? 2 : 1
+  end
+
+  def store
+    storage_type = SETTINGS.fetch('meme_storage').inquiry
+    if storage_type.both?
+      store_in_db
+      write_to_file
+    elsif storage_type.db?
+      store_in_db
+    elsif storage_type.file?
+      write_to_file
+    else
+      raise "Unsupported storage type"
+    end
   end
 
   def write_to_file

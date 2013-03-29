@@ -1,0 +1,8 @@
+development:
+  meme_storage: both #db file both
+
+production:
+  meme_storage: both
+
+test:
+  meme_storage: both
