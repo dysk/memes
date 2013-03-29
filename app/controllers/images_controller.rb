@@ -36,9 +36,9 @@ class ImagesController < ApplicationController
     @image = Image.find(params[:id])
     if stale?(:last_modified => @image.updated_at.utc, :etag => @image)
       respond_to do |format|
-        format.html
+        format.html {expires_in 10.minutes}
         format.jpg {
-          expires_in 5.years
+          expires_in 5.years, :public => true
           send_data @image.picture, type:'image/jpg', disposition: 'inline'
         }
       end

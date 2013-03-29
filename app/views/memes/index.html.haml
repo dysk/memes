@@ -9,7 +9,7 @@
     -g.each do |m|
       -if m
         .span3
-          =link_to(image_tag("memes/#{m.uid}.jpg", size: '240x240'), meme_path(m.uid))
+          =link_to(image_tag(meme_path(m.uid, format: 'jpg'), size: '240x240'), meme_path(m.uid))
           %p
             ="dodany: #{time_ago_in_words(m.created_at)} temu przez "
             =link_to(m.user_name, user_path(m.user_id))
