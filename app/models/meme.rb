@@ -81,7 +81,7 @@ class Meme < ActiveRecord::Base
     lower.text(x = 0, y = lower_text_y_position, text = self.text_lower)
     lower.draw(self.background)
     background.write("#{MEMES_DIR}/#{self.uid}.jpg")
-    #self.picture = self.background.to_blob
+    self.picture = self.background.to_blob
   end
 
   def created_at_human
