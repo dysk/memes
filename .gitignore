@@ -41,6 +41,7 @@ config/*.yml
 /public/cache
 /public/stylesheets/compiled
 /public/system/*
+/public/memes/*
 /spec/tmp/*
 /cache
 /capybara*
