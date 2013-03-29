@@ -17,7 +17,7 @@ role :app, '109.205.48.248'
 role :web, '109.205.48.248'
 role :db, '109.205.48.248', :primary=>true
 
-set :branch, "file_storage"
+#set :branch, "master"
 set :rails_env,  'production'
 set :applicationdir, "/home/espago-mems/www"
 
@@ -30,7 +30,7 @@ set :deploy_via, :remote_cache
 set :deploy_env, 'production'
 
 set :local_repository, repository
-set :branch, "file_storage"
+set :branch, "master"
 
 set :use_sudo, false
 set :sudo, 'sudo'
