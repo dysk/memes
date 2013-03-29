@@ -60,6 +60,7 @@ namespace :symlink do
   desc "Create a symlink to database.yml"
   task :database, :roles => :app do
     run "ln -fs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
+    run "ln -fs #{shared_path}/config/settings.yml #{release_path}/config/settings.yml"
   end
 end
 
