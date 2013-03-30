@@ -9,7 +9,7 @@
         .span4{ :style => "background-color:#dddddd;margin-bottom:-99999px;padding-bottom:99999px;" }
           .row-fluid
             .span6
-              =link_to(image_tag(meme_path(m.uid, format: 'jpg')), meme_path(m.uid))
+              =link_to(image_tag(meme_path(m.uid, format: 'jpg'), class: 'img-rounded'), meme_path(m.uid))
             .span6
               %p
                 =t('meme.crated.ago', time: time_ago_in_words(m.created_at))
