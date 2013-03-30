@@ -43,8 +43,9 @@ en:
     edit_account: Edytuj konto
     users: Userzy
     images: Obrazki
-    memes: Memy
+    memes: Najnowsze
     sign_up: Zarejestruj
+    top: Najlepsze
   meme:
     text_upper: Górny napis
     text_lower: Dolny napis
