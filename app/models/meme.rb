@@ -9,10 +9,12 @@ class Meme < ActiveRecord::Base
   MEMES_DIR = 'public/memes'
 
   include GenerateId
-  self.per_page = 8
+  self.per_page = 12
 
   belongs_to :user
   belongs_to :image
+  has_many :likes, as: :subject
+  has_many :likers, through: :likes, source: :user
 
   after_initialize :default_values
 
@@ -50,7 +52,7 @@ class Meme < ActiveRecord::Base
   end
 
   def created_at_human
-    self.created_at.strftime("%y-%m-%d %H:%M")
+    self.created_at.strftime("%Y-%m-%d %H:%M")
   end
 
   def user_name
@@ -61,6 +63,10 @@ class Meme < ActiveRecord::Base
   def user_id
     return self.user.id if self.user
     0
+  end
+
+  def likes_count
+    self.likes.count
   end
 
   private

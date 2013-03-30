@@ -16,7 +16,7 @@
             ="dodany: #{time_ago_in_words(i.created_at)} temu"
           - if current_user && current_user.has_role?(:admin)
             %p
-              =button_to(t('image.link.destroy'), i, :method=>:delete, :class=>:destroy, :confirm => t('image.link.confirmation'))
+              =link_to(t('image.link.destroy'), i, method: :delete, confirm: t('image.link.confirmation'))
 %p.spacer
   = will_paginate @images
 - if current_user && current_user.has_role?(:admin)

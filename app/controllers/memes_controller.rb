@@ -3,19 +3,19 @@ class MemesController < ApplicationController
 
   def index
     @memes = Meme.order('created_at DESC').paginate(page: params[:page])
-    @memes_groups = @memes.in_groups_of(4)
+    @memes_groups = @memes.in_groups_of(6)
   end
 
   def show
     @meme = Meme.where(uid: params[:id]).first!
-    if stale?(:last_modified => @meme.updated_at.utc, :etag => @meme)
-      respond_to do |format|
-        format.html {expires_in 10.minutes}
-        format.jpg {
+    respond_to do |format|
+      format.html
+      format.jpg {
+        if stale?(:last_modified => @meme.updated_at.utc, :etag => @meme)
           expires_in 5.years, :public => true
           send_data @meme.picture, type:'image/jpg', disposition: 'inline'
-        }
-      end
+        end
+      }
     end
   end
 

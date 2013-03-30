@@ -8,11 +8,15 @@
   .row.spacer
     -g.each do |m|
       -if m
-        .span3
+        .span2
           =link_to(image_tag(meme_path(m.uid, format: 'jpg'), size: '240x240'), meme_path(m.uid))
           %p
-            ="dodany: #{time_ago_in_words(m.created_at)} temu przez "
+            =t('meme.crated.ago', time: time_ago_in_words(m.created_at))
             =link_to(m.user_name, user_path(m.user_id))
+          %p
+            =meme_likers(m)
+            =meme_like_link(m)
+
 %p.spacer
   = will_paginate @memes
 %p

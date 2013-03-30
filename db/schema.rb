@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130328001354) do
+ActiveRecord::Schema.define(:version => 20130329225256) do
 
   create_table "images", :force => true do |t|
     t.string   "name"
@@ -22,6 +22,17 @@ ActiveRecord::Schema.define(:version => 20130328001354) do
     t.datetime "created_at",                      :null => false
     t.datetime "updated_at",                      :null => false
   end
+
+  create_table "likes", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "subject_id"
+    t.string   "subject_type"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "likes", ["subject_type", "subject_id"], :name => "index_likes_on_subject_type_and_subject_id"
+  add_index "likes", ["user_id"], :name => "index_likes_on_user_id"
 
   create_table "memes", :force => true do |t|
     t.integer  "user_id"

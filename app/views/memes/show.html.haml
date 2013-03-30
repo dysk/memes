@@ -12,10 +12,13 @@
   .span4
     %p
       %h5"#{@meme.text_upper}, #{@meme.text_lower}"
-    %p="dodany: #{@meme.created_at_human}"
+    %p=t('meme.crated.at', time: @meme.created_at_human)
     %p
-      ="autor : "
+      =tp('author')
       =link_to(@meme.user_name, user_path(@meme.user_id))
+    %p
+      =meme_likers(@meme)
+      =meme_like_link(@meme)
     - if current_user && current_user.has_role?(:admin)
       %p
         =button_to(t('meme.link.destroy'), @meme, :method=>:delete, :class=>:destroy, :confirm => t('meme.link.confirmation'))

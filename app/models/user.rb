@@ -11,8 +11,13 @@ class User < ActiveRecord::Base
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 
   has_many :memes
+  has_many :likes
 
   def memes_count
     self.memes.count
-  end  
+  end
+
+  def likes_meme?(meme)
+    self.likes.where(subject_type: meme.class.name).where(subject_id: meme.id).first
+  end
 end

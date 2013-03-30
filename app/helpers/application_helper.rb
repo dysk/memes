@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 module ApplicationHelper
 
   def display_base_errors resource
@@ -14,6 +16,46 @@ module ApplicationHelper
 
   def tp(value)
     "#{t(value)}: "
+  end
+
+  def meme_likers(m)
+    if current_user
+      if current_user.likes_meme?(m)
+        link_to('-1', unlike_meme_path(m), method: :delete)
+        if m.likes_count == 1
+          t('likes.you_like')
+        else
+          t('likes.you_and_people_likes', count: m.likes_count-1)
+        end
+      else
+        link_to('+1', like_meme_path(m), method: :post)
+        likers_if_you_dont(m)
+      end
+    else
+      likers_if_you_dont(m)
+    end
+  end
+
+  def likers_if_you_dont(m)
+    if m.likes_count == 1
+      user = m.likers.first
+      link_to(user.name, user) + t('likes.like')
+    elsif m.likes_count > 1
+      user = m.likers.sample
+      link_to(user.name, user) + t('likes.and_people_likes', count: m.likes_count-1)
+    else
+      t('likes.nobody_likes')
+    end
+  end
+
+  def meme_like_link(m)
+    if current_user
+      if current_user.likes_meme?(m)
+        link_to('-1', unlike_meme_path(m), method: :delete)
+      else
+        link_to('+1', like_meme_path(m), method: :post)
+      end
+    end
   end
 
 end

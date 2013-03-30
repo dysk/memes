@@ -7,6 +7,14 @@ en:
   password: 'Hasło'
   name: 'Nazwa'
   back: 'Powrót'
+  author: "autor"
+  likes:
+    people_likes: "%{count} osób lubi to"
+    you_and_people_likes: "Ty i %{count} osób lubi to"
+    you_like: "Lubisz to"
+    likes: " lubi to"
+    and_people_likes: " i %{count} osób lubi to"
+    nobody_likes: "Nikt tego nie lubi"
   sign_in:
     header: Logowanie
     remember_me: Zapamiętaj mnie
@@ -40,6 +48,9 @@ en:
   meme:
     text_upper: Górny napis
     text_lower: Dolny napis
+    crated:
+      ago: "dodany %{time} temu przez"
+      at: "dodany %{time}"
     show:
       header: Espago mem
     index:
