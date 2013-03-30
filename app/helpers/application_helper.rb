@@ -51,9 +51,9 @@ module ApplicationHelper
   def meme_like_link(m)
     if current_user
       if current_user.likes_meme?(m)
-        link_to('-1', unlike_meme_path(m), method: :delete)
+        content_tag(:small, link_to('-1', unlike_meme_path(m), method: :delete, class: 'gray'))
       else
-        link_to('+1', like_meme_path(m), method: :post)
+        content_tag(:strong, link_to('+1', like_meme_path(m), method: :post))
       end
     end
   end
