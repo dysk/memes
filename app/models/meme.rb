@@ -9,7 +9,7 @@ class Meme < ActiveRecord::Base
   MEMES_DIR = 'public/memes'
 
   include GenerateId
-  self.per_page = 12
+  self.per_page = 6
 
   belongs_to :user
   belongs_to :image

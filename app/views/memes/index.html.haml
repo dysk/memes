@@ -2,24 +2,24 @@
   %strong=link_to(t('meme.link.new_meme_from_image'), images_path)
 %p
   =link_to(t('meme.link.new_meme'), new_meme_path)
-%p
-  = will_paginate @memes
 -@memes_groups.each do |g|
-  .row.spacer
+  .row-fluid.spacer{ :style => "overflow: hidden;"}
     -g.each do |m|
       -if m
-        .span2
-          =link_to(image_tag(meme_path(m.uid, format: 'jpg'), size: '240x240'), meme_path(m.uid))
-          %p
-            =t('meme.crated.ago', time: time_ago_in_words(m.created_at))
-            =link_to(m.user_name, user_path(m.user_id))
-          %p
-            =meme_likers(m)
-            =meme_like_link(m)
-
+        .span4{ :style => "background-color:#dddddd;margin-bottom:-99999px;padding-bottom:99999px;" }
+          .row-fluid
+            .span6
+              =link_to(image_tag(meme_path(m.uid, format: 'jpg')), meme_path(m.uid))
+            .span6
+              %p
+                =t('meme.crated.ago', time: time_ago_in_words(m.created_at))
+                =link_to(m.user_name, user_path(m.user_id))
+              .row-fluid
+                .span12
+                  =meme_likers(m)
+              .row-fluid
+                .span10
+                .span2
+                  =meme_like_link(m)
 %p.spacer
   = will_paginate @memes
-%p
-  =link_to(t('meme.link.new_meme'), new_meme_path)
-%p
-  %strong=link_to(t('meme.link.new_meme_from_image'), images_path)

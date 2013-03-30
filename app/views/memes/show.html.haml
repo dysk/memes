@@ -1,4 +1,4 @@
-.row
+.row-fluid
   .span2
     -if @meme.image
       %p
@@ -10,15 +10,20 @@
   .span6
     =image_tag(meme_path(@meme.uid, format: 'jpg'))
   .span4
-    %p
-      %h5"#{@meme.text_upper}, #{@meme.text_lower}"
-    %p=t('meme.crated.at', time: @meme.created_at_human)
-    %p
-      =tp('author')
-      =link_to(@meme.user_name, user_path(@meme.user_id))
-    %p
-      =meme_likers(@meme)
-      =meme_like_link(@meme)
+    .row-fluid
+      .span12
+        %h4=meme_quote(@meme)
+    .row-fluid
+      .span12=t('meme.crated.at', time: @meme.created_at_human)
+    .row-fluid
+      .span12
+        =tp('author')
+        =link_to(@meme.user_name, user_path(@meme.user_id))
+    .row-fluid
+      .span10
+        =meme_likers(@meme)
+      .span2=meme_like_link(@meme)
     - if current_user && current_user.has_role?(:admin)
-      %p
-        =button_to(t('meme.link.destroy'), @meme, :method=>:delete, :class=>:destroy, :confirm => t('meme.link.confirmation'))
+      .row-fluid
+        .span12
+          =button_to(t('meme.link.destroy'), @meme, :method=>:delete, :class=>:destroy, :confirm => t('meme.link.confirmation'))

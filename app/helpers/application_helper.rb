@@ -39,9 +39,9 @@ module ApplicationHelper
   def likers_if_you_dont(m)
     if m.likes_count == 1
       user = m.likers.first
-      link_to(user.name, user) + t('likes.like')
+      link_to(user.name, user) + t('likes.likes')
     elsif m.likes_count > 1
-      user = m.likers.sample
+      user = m.likers.last
       link_to(user.name, user) + t('likes.and_people_likes', count: m.likes_count-1)
     else
       t('likes.nobody_likes')
@@ -58,4 +58,7 @@ module ApplicationHelper
     end
   end
 
+  def meme_quote(m)
+    "#{m.text_upper} #{m.text_lower}"
+  end
 end
