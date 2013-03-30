@@ -11,9 +11,15 @@
             .span6
               =link_to(image_tag(meme_path(m.uid, format: 'jpg'), class: 'img-rounded'), meme_path(m.uid))
             .span6
-              %p
-                =t('meme.crated.ago', time: time_ago_in_words(m.created_at))
-                =link_to(m.user_name, user_path(m.user_id))
+              .row-fluid
+                .span12
+                  %h5=truncate(meme_quote(m), length: 25, omission: '...', separator: ' ')
+              .row-fluid
+                .span12
+                  %small=t('meme.crated.ago', time: time_ago_in_words(m.created_at))
+                  =link_to(m.user_name, user_path(m.user_id))
+              .row-fluid
+                .span12
               .row-fluid
                 .span12
                   =meme_likers(m)
