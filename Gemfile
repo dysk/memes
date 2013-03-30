@@ -29,4 +29,4 @@ gem "binding_of_caller", ">= 0.7.1", :group => :development, :platforms => [:mri
 gem "rmagick", ">= 2.13.2", :require => 'RMagick'
 gem 'will_paginate', '~> 3.0.0'
 gem 'capistrano'
-gem 'will_paginate-bootstrap'
+gem 'bootstrap-will_paginate'
