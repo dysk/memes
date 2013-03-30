@@ -8,7 +8,7 @@
       = f.error_notification
       = display_base_errors @meme
       -if @image
-        = image_tag(image_path(@image, format: 'jpg'))
+        = image_tag(image_path(@image, format: 'jpg'), class: 'img-rounded')
         = f.input :image_ref, :as => 'hidden', :input_html => { :value => @image.id }
       -else
         = f.input :image_ref, :label => t('image.picture'), :collection => Image.all.map{|i| [i.name, i.id]}, :prompt => t('meme.new.prompt')

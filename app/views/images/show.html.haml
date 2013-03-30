@@ -8,7 +8,7 @@
       %p
         =link_to(t('image.link.new_image'), new_image_path)
   .span6
-    =image_tag(image_path(@image, format: 'jpg'))
+    =image_tag(image_path(@image, format: 'jpg'), class: 'img-rounded')
   .span4
     %p="dodany: #{@image.created_at_human}"
     %p="rozmiar: #{@image.width}x#{@image.height}"
