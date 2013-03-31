@@ -16,6 +16,10 @@ class Meme < ActiveRecord::Base
   has_many :likes, as: :subject
   has_many :likers, through: :likes, source: :user
 
+  scope :author, lambda { |author_id|
+    where("user = ?", author_id)
+  }
+
   after_initialize :default_values
 
   attr_accessor :image_ref, :background
@@ -63,10 +67,6 @@ class Meme < ActiveRecord::Base
   def user_id
     return self.user.id if self.user
     0
-  end
-
-  def likes_count
-    self.likes.count
   end
 
   private

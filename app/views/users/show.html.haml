@@ -5,3 +5,4 @@
 %p
   =tp('user.show.memes_count')
   #{@user.memes_count}
+  =link_to('Zobacz', memes_path(author: @user.id))

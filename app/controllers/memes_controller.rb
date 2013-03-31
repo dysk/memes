@@ -2,8 +2,9 @@ class MemesController < ApplicationController
   before_filter :authenticate_user!, except: ['index', 'show']
 
   def index
-    order = params[:order] == 'likes' ? 'likes DESC' : 'created_at DESC'
-    @memes = Meme.order(order).paginate(page: params[:page])
+    order = params[:order] == 'likes' ? 'likes_count DESC' : 'created_at DESC'
+    memes_scope = Meme.order(order).paginate(page: params[:page]).scoped
+    @memes = memes_scope
     @memes_groups = @memes.in_groups_of(3)
   end
 

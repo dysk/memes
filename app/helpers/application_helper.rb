@@ -20,7 +20,7 @@ module ApplicationHelper
 
   def meme_likers(m)
     if current_user
-      if current_user.likes_meme?(m)
+      if current_user.likes?(m)
         link_to('-1', unlike_meme_path(m), method: :delete)
         if m.likes_count == 1
           t('likes.you_like')
@@ -50,7 +50,7 @@ module ApplicationHelper
 
   def meme_like_link(m)
     if current_user
-      if current_user.likes_meme?(m)
+      if current_user.likes?(m)
         content_tag(:small, link_to('-1', unlike_meme_path(m), method: :delete, class: 'gray'))
       else
         content_tag(:strong, link_to('+1', like_meme_path(m), method: :post))

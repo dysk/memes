@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
     self.memes.count
   end
 
-  def likes_meme?(meme)
-    self.likes.where(subject_type: meme.class.name).where(subject_id: meme.id).first
+  def likes?(subject)
+    self.likes.where(subject_type: subject.class.name).where(subject_id: subject.id).first
   end
 end
