@@ -1,5 +1,5 @@
 require "rubygems"
-require "nokogiri"
+#require "nokogiri"
 require "uri"
 
 module Rack
