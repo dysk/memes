@@ -1,5 +1,5 @@
 require "rubygems"
-#require "nokogiri"
+require "nokogiri"
 require "uri"
 
 module Rack
@@ -51,7 +51,7 @@ module Rack
     def enhance_html(env, response)
       body = ""
       response.each { |res| body += res }
-      doc = ::Nokogiri::HTML(body)
+      doc = Nokogiri::HTML(body)
 
       doc.css("a").each { |link| link["href"] = add_ext(env, link["href"]) if link["href"] }
       doc.css("form").each { |form| form["action"] = add_ext(env, form["action"]) if form["action"] }
