@@ -10,7 +10,7 @@ set :user, "espago-mems"
 set :runner, user
 set :application, user
 
-set :repository,  "espago@git.espago.com:espago-memes.git"
+set :repository,  "espago@git.espago.com:dysk/espago-memes.git"
 set :domain, "espago-mems"
 
 role :app, '109.205.48.248'
