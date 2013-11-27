@@ -4,6 +4,7 @@ class MemesController < ApplicationController
   def index
     order = params[:order] == 'likes' ? 'likes_count DESC' : 'created_at DESC'
     memes_scope = Meme.order(order).paginate(page: params[:page]).scoped
+    memes_scope = memes_scope.where(user_id: params[:author]) if params[:author]
     @memes = memes_scope
     @memes_groups = @memes.in_groups_of(3)
   end
