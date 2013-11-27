@@ -104,6 +104,7 @@ en:
   alert:
     meme:
       not_created: 'Nie udało się utworzyć mema!'
+    record_not_found: 'Nieprawidłowy adres!'
 
   will_paginate:
     previous_label: "&#8592; Poprzednia"
