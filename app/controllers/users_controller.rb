@@ -1,6 +1,4 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user!
-
   def index
     authorize! :index, @user, :message => I18n.t('cancan.access_denied')
     @users = User.all

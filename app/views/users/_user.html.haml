@@ -5,6 +5,7 @@
       %h3 Change Role
     .modal-body
       = f.input :role_ids, :collection => Role.all, :as => :radio_buttons, :label_method => lambda {|t| t.name.titleize}, :label => false, :item_wrapper_class => 'inline', checked: user.role_ids.first
+      = f.input :active, :as => :boolean, :label => 'Active', :item_wrapper_class => 'inline', checked: user.active
     .modal-footer
-      = f.submit "Change Role", :class => "btn"
+      = f.submit "Confirm", :class => "btn"
       %a.btn{"data-dismiss" => "modal", :href => "#"} Close

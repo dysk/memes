@@ -1,6 +1,4 @@
 class ImagesController < ApplicationController
-  before_filter :authenticate_user!, except: [:index, :show]
-
   def create
     authorize! :create, @image, :message => I18n.t('cancan.access_denied')
     @image = Image.new(params[:image])

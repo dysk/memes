@@ -1,6 +1,4 @@
 class LikesController < ApplicationController
-  before_filter :authenticate_user!
-
   def create
     meme = Meme.find(params[:id])
     Like.create!(current_user, meme)

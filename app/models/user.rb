@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :role_ids, :as => :admin
+  attr_accessible :role_ids, :active, :as => :admin
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 
   has_many :memes
@@ -19,5 +19,13 @@ class User < ActiveRecord::Base
 
   def likes?(subject)
     self.likes.where(subject_type: subject.class.name).where(subject_id: subject.id).first
+  end
+
+  def active_for_authentication?
+    super && self.active
+  end
+
+  def inactive_message
+    I18n.t('devise.failure.inactive')
   end
 end
